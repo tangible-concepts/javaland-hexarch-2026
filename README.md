@@ -4,19 +4,30 @@
 
 Dieses Repository enthält das Beispielprojekt für den ganztägigen Workshop. Es demonstriert den Unterschied zwischen einer klassischen Schichten-Architektur und einer hexagonalen Architektur (Ports & Adapters) anhand einer einfachen Bibliotheksverwaltung.
 
-## Projektstruktur
+## Branches
+
+Das Repository ist auf zwei Branches aufgeteilt:
+
+### `main` – Schichten-Architektur & Starter
 
 ```
-libraryflow-workshop/
 ├── libraryflow-starter/             # Startpunkt für Teilnehmer (leeres Skelett)
-├── libraryflow-layered/             # Version 1: Schichten-Architektur
-├── libraryflow-hexagonal-red/       # Version 2: Misslungene hexagonale Überführung
-├── libraryflow-hexagonal-blue/      # Version 3: Korrekte hexagonale Architektur
-├── libraryflow-hexagonal-green/     # Version 4: Hexagonal + Spring-Stereotypen
+├── libraryflow-layered/             # Schichten-Architektur (Referenzbeispiel)
 └── docs/
     ├── MIGRATION.md                 # Schritt-für-Schritt Refactoring-Guide
     ├── JDEPEND.md                   # Metriken-Auswertung und -Vergleich
     └── TRAINER-NOTES.md             # Hinweise für Trainer
+```
+
+### `hexagonal-examples` – Alle Beispiele inkl. hexagonale Varianten
+
+```
+├── libraryflow-starter/                    # Startpunkt für Teilnehmer (leeres Skelett)
+├── libraryflow-layered/                    # Schichten-Architektur (Referenzbeispiel)
+├── libraryflow-hexagonal-bad-example/      # Misslungene hexagonale Überführung
+├── libraryflow-hexagonal-example/          # Korrekte hexagonale Architektur
+├── libraryflow-hexagonal-spring-example/   # Hexagonal + Spring-Stereotypen
+└── docs/
 ```
 
 ## Voraussetzungen
@@ -32,28 +43,32 @@ libraryflow-workshop/
 git clone <repository-url>
 cd hex-arch-javaland
 
-# Projekt bauen und Tests ausführen
+# Projekt bauen und Tests ausführen (main-Branch)
 mvn clean install
 
-# Version 1 starten (Port 8080)
+# Schichten-Architektur starten (Port 8080)
 mvn spring-boot:run -pl libraryflow-layered
-
-# Version 2 starten (Port 8081)
-mvn spring-boot:run -pl libraryflow-hexagonal-red
-
-# Version 3 starten (Port 8082)
-mvn spring-boot:run -pl libraryflow-hexagonal-blue
-
-# Version 4 starten (Port 8083)
-mvn spring-boot:run -pl libraryflow-hexagonal-green
 
 # Starter starten (Port 8084)
 mvn spring-boot:run -pl libraryflow-starter
+
+# Für die hexagonalen Beispiele:
+git checkout hexagonal-examples
+mvn clean install
+
+# Misslungene hexagonale Überführung starten (Port 8081)
+mvn spring-boot:run -pl libraryflow-hexagonal-bad-example
+
+# Korrekte hexagonale Architektur starten (Port 8082)
+mvn spring-boot:run -pl libraryflow-hexagonal-example
+
+# Hexagonal + Spring-Stereotypen starten (Port 8083)
+mvn spring-boot:run -pl libraryflow-hexagonal-spring-example
 ```
 
 ## Endpunkte
 
-### Alle Versionen (Ports 8080–8084)
+### Alle Versionen (Ports 8080–8084, hexagonale Varianten nur im Branch `hexagonal-examples`)
 
 | Methode | URL | Beschreibung |
 |---------|-----|-------------|
@@ -69,7 +84,7 @@ mvn spring-boot:run -pl libraryflow-starter
 | POST | `/api/admin/users` | Nutzer anlegen |
 | GET | `/api/admin/users/{id}` | Nutzer nach ID |
 
-### Version 2 zusätzlich (Port 8081)
+### libraryflow-hexagonal-bad-example zusätzlich (Port 8081, Branch `hexagonal-examples`)
 
 | URL | Beschreibung |
 |-----|-------------|
@@ -83,9 +98,9 @@ Alle Versionen: `/h2-console`
 | Modul | JDBC URL |
 |-------|----------|
 | libraryflow-layered | `jdbc:h2:mem:libraryflow` |
-| libraryflow-hexagonal-red | `jdbc:h2:mem:libraryflow-red` |
-| libraryflow-hexagonal-blue | `jdbc:h2:mem:libraryflow-blue` |
-| libraryflow-hexagonal-green | `jdbc:h2:mem:libraryflow-green` |
+| libraryflow-hexagonal-bad-example | `jdbc:h2:mem:libraryflow-red` |
+| libraryflow-hexagonal-example | `jdbc:h2:mem:libraryflow-blue` |
+| libraryflow-hexagonal-spring-example | `jdbc:h2:mem:libraryflow-green` |
 | libraryflow-starter | `jdbc:h2:mem:libraryflow-starter` |
 
 User: `sa`, kein Passwort.
@@ -114,7 +129,7 @@ Details zur Ausführung und Interpretation: [JDEPEND.md](docs/JDEPEND.md)
 - Spring Boot 3.4.x
 - Spring Data JPA
 - Spring Web (REST)
-- Spring GraphQL (nur Version 2)
+- Spring GraphQL (nur libraryflow-hexagonal-bad-example)
 - H2 In-Memory Database
 - JUnit 5 + Mockito + AssertJ
-- ArchUnit 1.3.0 (Versionen 3+4)
+- ArchUnit 1.3.0 (hexagonale Varianten)
