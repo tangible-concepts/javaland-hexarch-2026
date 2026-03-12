@@ -27,6 +27,9 @@
     <modules>
         <module>libraryflow-starter</module>
         <module>libraryflow-layered</module>
+        <module>libraryflow-hexagonal-bad-example</module>
+        <module>libraryflow-hexagonal-example</module>
+        <module>libraryflow-hexagonal-spring-example</module>
     </modules>
 
 </project>
